@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
+import { msg } from '../utils/message'
 import Home from '../views/Home.vue'
 import Task from '../views/Task.vue'
 import Login from '../views/Login.vue'
