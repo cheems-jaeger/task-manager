@@ -5,8 +5,8 @@
         <router-link to="/home">首页</router-link>
         <router-link to="/task">任务管理</router-link>
       </div>
-      <div class="nav-right" v-if="username">
-        <span class="user-name">欢迎：{{ username }}</span>
+      <div class="nav-right" v-if="userStore.isLoggedIn">
+        <span class="user-name">欢迎：{{ userStore.username }}</span>
         <button class="logout-btn" @click="logout">退出登录</button>
       </div>
     </nav>
@@ -15,24 +15,15 @@
 </template>
 
 <script setup>
-import { ref, onMounted } from 'vue'
 import { useRouter } from 'vue-router'
-import { msg } from './utils/message'
+import { useUserStore } from './stores/user'
 
 const router = useRouter()
-const username = ref('')
+const userStore = useUserStore()
 
-// 自动获取登录状态
-onMounted(() => {
-  username.value = localStorage.getItem('username')
-})
-
-// 退出登录二次确认
+// 退出登录
 const logout = () => {
-  if (!msg.confirm('确定退出登录？')) return
-  localStorage.clear()
-  username.value = ''
-  msg.success('退出成功')
+  userStore.logout()
   router.push('/login')
 }
 </script>
