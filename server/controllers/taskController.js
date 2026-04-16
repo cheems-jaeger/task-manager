@@ -6,6 +6,29 @@ const CATEGORIES = ['工作', '生活', '学习', '其他'];
 // 任务优先级枚举
 const PRIORITIES = ['low', 'medium', 'high'];
 
+// 发送任务变更通知
+const sendTaskNotification = async (operation, task) => {
+  try {
+    const notificationData = {
+      operation,
+      id: task.id,
+      user_id: task.user_id,
+      content: task.content,
+      status: task.status,
+      category: task.category,
+      priority: task.priority,
+      timestamp: new Date().toISOString()
+    };
+    
+    // 打印到控制台
+    console.log('📢 任务变更通知:', notificationData);
+    
+    // 这里可以添加其他通知方式，比如WebSocket
+  } catch (err) {
+    console.error('发送通知失败：', err);
+  }
+};
+
 // 查询自己的任务
 const getList = async (req, res) => {
   try {
@@ -45,9 +68,13 @@ const addTask = async (req, res) => {
 
   try {
     const result = await pool.query(
-      'INSERT INTO tasks (content, category, priority, user_id) VALUES ($1, $2, $3, $4) RETURNING id',
+      'INSERT INTO tasks (content, category, priority, user_id) VALUES ($1, $2, $3, $4) RETURNING *',
       [content.trim(), category, priority, req.user.id]
     );
+    
+    // 发送通知
+    await sendTaskNotification('INSERT', result.rows[0]);
+    
     res.json(success({ id: result.rows[0].id }, '添加成功'));
   } catch (err) {
     console.error('添加任务失败：', err);
@@ -98,6 +125,16 @@ const updateTask = async (req, res) => {
       'UPDATE tasks SET content = $1, status = $2, category = COALESCE($3, category), priority = COALESCE($4, priority) WHERE id = $5 AND user_id = $6',
       [content.trim(), status, category, priority, id, req.user.id]
     );
+    
+    // 获取更新后的任务
+    const updatedResult = await pool.query(
+      'SELECT * FROM tasks WHERE id = $1',
+      [id]
+    );
+    
+    // 发送通知
+    await sendTaskNotification('UPDATE', updatedResult.rows[0]);
+    
     res.json(success(null, '修改成功'));
   } catch (err) {
     console.error('修改任务失败：', err);
@@ -125,10 +162,16 @@ const deleteTask = async (req, res) => {
       return res.json(fail('任务不存在或无权限删除'));
     }
     
+    const taskToDelete = checkResult.rows[0];
+    
     await pool.query(
       'DELETE FROM tasks WHERE id = $1 AND user_id = $2',
       [id, req.user.id]
     );
+    
+    // 发送通知
+    await sendTaskNotification('DELETE', taskToDelete);
+    
     res.json(success(null, '删除成功'));
   } catch (err) {
     console.error('删除任务失败：', err);

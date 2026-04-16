@@ -89,15 +89,163 @@ const register = async () => {
 </script>
 
 <style scoped>
-.reg-wrapper { display: flex; align-items: center; justify-content: center; min-height: calc(100vh - 70px); padding: 20px; }
-.reg-card { width: 100%; max-width: 420px; position: relative; text-align: center; }
-.back-btn { position: absolute; left: 20px; top: 20px; background: #f1f1f1; padding: 6px 12px; font-size: 14px; }
- h2 { margin: 20px 0 30px; color: #333; }
-.form-item { margin-bottom: 18px; position: relative; }
-.form-item input { width: 100%; padding: 12px 14px; font-size: 15px; }
-.eye { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); font-size: 14px; color: #666; cursor: pointer; }
-.submit-btn { width: 100%; padding: 12px; background: #42b983; color: #fff; font-size: 16px; margin-top: 10px; }
-.submit-btn:disabled { background: #999; cursor: not-allowed; }
-.link { margin-top: 20px; color: #666; cursor: pointer; font-size: 14px; }
-.error-message { display: block; color: #f56c6c; font-size: 12px; text-align: left; margin-top: 4px; }
+.reg-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: calc(100vh - 100px);
+  padding: 20px;
+  background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+}
+
+.reg-card {
+  width: 100%;
+  max-width: 450px;
+  position: relative;
+  text-align: center;
+  background: #fff;
+  border-radius: 20px;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  padding: 40px;
+  border: 1px solid #f0f0f0;
+  backdrop-filter: blur(10px);
+}
+
+.back-btn {
+  position: absolute;
+  left: 20px;
+  top: 20px;
+  background: rgba(102, 126, 234, 0.1);
+  color: #667eea;
+  padding: 8px 16px;
+  font-size: 14px;
+  border-radius: 20px;
+  border: 1px solid rgba(102, 126, 234, 0.2);
+  transition: all 0.3s ease;
+  cursor: pointer;
+}
+
+.back-btn:hover {
+  background: rgba(102, 126, 234, 0.2);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 8px rgba(102, 126, 234, 0.2);
+}
+
+h2 {
+  margin: 20px 0 30px;
+  color: #333;
+  font-size: 24px;
+  font-weight: 700;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.form-item {
+  margin-bottom: 24px;
+  position: relative;
+  text-align: left;
+}
+
+.form-item input {
+  width: 100%;
+  padding: 14px 18px;
+  font-size: 16px;
+  border: 2px solid #eaeaea;
+  border-radius: 10px;
+  transition: all 0.3s ease;
+  background: #f8f9fa;
+}
+
+.form-item input:focus {
+  border-color: #667eea;
+  box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+  background: #fff;
+  outline: none;
+}
+
+.eye {
+  position: absolute;
+  right: 18px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 14px;
+  color: #666;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.eye:hover {
+  color: #667eea;
+}
+
+.submit-btn {
+  width: 100%;
+  padding: 14px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 4px 12px rgba(102, 126, 234, 0.3);
+  margin-top: 10px;
+}
+
+.submit-btn:hover:not(:disabled) {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(102, 126, 234, 0.4);
+}
+
+.submit-btn:disabled {
+  background: #999;
+  cursor: not-allowed;
+  box-shadow: none;
+  transform: none;
+}
+
+.link {
+  margin-top: 24px;
+  color: #667eea;
+  cursor: pointer;
+  font-size: 14px;
+  font-weight: 500;
+  transition: color 0.3s ease;
+}
+
+.link:hover {
+  color: #764ba2;
+  text-decoration: underline;
+}
+
+.error-message {
+  display: block;
+  color: #f56c6c;
+  font-size: 12px;
+  text-align: left;
+  margin-top: 6px;
+  font-weight: 500;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+  .reg-card {
+    padding: 30px 24px;
+  }
+  
+  h2 {
+    font-size: 20px;
+  }
+  
+  .form-item input {
+    padding: 12px 16px;
+  }
+  
+  .submit-btn {
+    padding: 12px;
+  }
+}
 </style>
